@@ -1,0 +1,73 @@
+#WRITE WHAT YOU NEED TO DO HERE
+#pull most recent dune lidar dem .nc
+#edit/delete fields as necessary
+#test full over-write ability
+#below attributes work but needs updating as specified above (20230428)
+
+import xarray as xr
+
+GlobalAttributes={
+           'title'                          : 'lidarBeachDEM',
+           'name'                           : 'VZ-1000 Calculated Beach Digital Elevation Model',
+           'featureType'                    : 'grid',
+           'summary'                        : 'Digital Elevation model collected using a Riegl VZ-1000 terrestrial laser scanner mounted on the North lidar tower at the United States Armp Corps of Engineers Coastal And Hydraulics Laboratory Field Research Facility (USACE/CHL/FRF) in Duck, NC.',
+           'description'                    : 'Lidar Beach Digital Elevation Model',
+           'comment'                        : 'Lidar point density and accuracy decreases with range. Please check coregQCFlag for a measure of rectification accuracy.',
+           'cdm_data_type'                  : 'Station',
+           'source'                         : 'VZ-1000 terrestiral lazer scanner observations from the North lidar tower at USACE/CHL/FRF.',
+           'sourceUrl'                      : '(local files)',
+           'standard_name_vocabulary'       : 'CFv25',
+           'Metadata_Conventions'           : 'Unidata Dataset Discovery v1.0, CF-1.6',
+           'Conventions'                    : 'CF-1.6',
+           'creator_name'                   : 'USACE/CHL/FRF',
+           'creator_url'                    : 'http://www.frf.usace.army.mil/',
+           'creator_email'                  : 'frfwebmaster@usace.army.mil',
+           'license'                        : 'These data may be redistributed and used without restriction. Data are intended for scholarly use by the research community, with the express agreement that users will properly acknowledge the USACE Field Research Facility and the supporting investigator(s). Use or reproduction of these data for commercial purposes is prohibited without prior written permission.',
+           'keywords_vocabulary'            : 'Global Change Master Directory (GCMD) Earth Science Keywords; CF Standard Name Table (v23, 23 March 2013)',
+           'keywords'                       : 'CONTINENT > NORTH AMERICA > UNITED STATES OF AMERICA > NORTH CAROLINA, EARTH SCIENCE > OCEANS > COASTAL PROCESSES,  EARTH SCIENCE > OCEANS > COASTAL PROCESSES > BEACHES, EARTH SCIENCE > OCEANS > COASTAL PROCESSES > INTERTIDAL ZONE, EARTH SCIENCE > OCEANS > COASTAL PROCESSES > SHORELINES, EARTH SCIENCE > OCEANS > OCEAN WAVES, Earth Remote Sensing Instruments > Active Remote Sensing > Altimeters > Lidar/Laser Altimeters DOD > DOD/USARMY/USACE/CHL/FRF > Field Research Facility, Coastal And Hydraulics Laboratory, U. S. Army Corps Of Engineers, U.S. Army, U. S. Department Of Defense, Lidar Data',
+           'processing'                     : 'realtime',
+           'organization'                   : 'USACE/CHL/FRF',
+           'publisher_url'                  : 'http://www.frf.usace.army.mil',
+           'infoUrl'                        : 'http://chlthredds.erdc.dren.mil/thredds/catalog/frf/catalog.html',
+           'publisher_email'                : 'frfwebmaster@usace.army.mil',
+           'publisher_name'                 : 'USACE/CHL/FRF',
+           'format_version'                 : 'v1.0',
+           'institution'                    : 'U. S. Army Corps Of Engineers, Coastal And Hydraulics Laboratory,  Field Research Facility (USACE/CHL/FRF)',
+           'contact'                        : 'USACE/CHL/FRF',
+           'contact_info'                   : 'USACE/CHL/FRF',
+           'contact_role'                   : 'owner',
+           'contributor_name'               : 'USACE/CHL/FRF',
+           'contributor_role'               : 'USACE/CHL/FRF',
+           'naming_authority'               : 'FRF',
+           'origin'                         : 'USACE/CHL/FRF',
+           'date_created'                   : '2021-07-07',
+           'date_issued'                    : '2021-07-07',
+           'acknowledgement'                : 'Data are provided by the US Army Engineer Research & Development Center, Coastal and Hydrualics Laboratory Field Research Facility in Duck, NC.',
+           'project'                        : 'USACE Coastal Field Data Collection Program',
+           'id'                             : '948',
+           'processing_level'               : 'L1',
+           'geospatial_vertical_units'      : 'm',
+           'geospatial_vertical_resolution' : '0.01',
+           'geospatial_vertical_min'        : '-5',
+           'geospatial_vertical_max'        : '10',
+           'geospatial_vertical_origin'     : 'NAVD88 (geoid12b)',
+           'geospatial_lat_min'             : '36.1791',
+           'geospatial_lat_max'             : '36.1825',
+           'geospatial_lat_units'           : 'degrees_north',
+           'geospatial_lon_min'             : '-75.7371',
+           'geospatial_lon_max'             : '-75.7461',
+           'geospatial_lon_units'           : 'degrees_east',
+           'geospatial_vertical_positive'   : 'up',
+           'time_coverage_start'            : '1970-01-09T13:05:08',
+           'time_coverage_end'              : '1970-01-09T13:05:37',
+           'platform'                       : 'North lidar tower',
+           'instrument'                     : 'Riegl VZ-1000 terrestrial laser scanner',
+           'vertical_datum'                 : 'NAVD88 (geoid12b)',
+           'horizontal_datum'               : 'FRF coordinates (rotated from NAD83(2011), North Carolina State Plane, meters(3200) using origin [901951.6805 E, 274093.1562 N] and rotation angle 69.9747)'}
+
+fn='P:\data\CLARIS\CFDC_Regional_Surveys\Products\Arc_operational\operational_NCs\clarisFRF_20210907.nc'
+ds=xr.open_dataset(fn)
+ds=ds.assign_attrs(GlobalAttributes)
+ds
+
+ds=ds.to_netcdf('P:\data\CLARIS\CFDC_Regional_Surveys\Products\Arc_operational\operational_NCs\clarisFRF_20210907_testAttrs3.nc')
