@@ -1,0 +1,15 @@
+#Function 3
+
+#Function takes parsed input CSV and returns a CSV with only Dive Depths. NOTE - Requires input of list from Function 2 output. 
+
+#Set diveList equal to [FUNCTION 2 List Output]
+
+def diveDepthsCSV(parsedCSV, onlyDivesCSV):
+    colnames = ['vehicleID','lat','lon','depth_m','temp_C','groundSpeed_m_p_s','yaw_deg','pitch_deg','roll_deg','date','time']
+    df = pd.read_csv(parsedCSV, names=colnames)
+    diveList = ['3.85', '3.88', '4.01', '3.99', '3.83', '3.95', '3.99', '3.98', '2.14']
+    onlyDives = df.loc[df['depth_m'].isin(diveList)]
+    onlyDives.to_csv(onlyDivesCSV,index = False)
+    print('done')
+    
+diveDepthsCSV('./swarm_divers_604_10-19-2021-parsed.csv','./swarm_divers_604_10-19-2021_only_dives_fx.csv')

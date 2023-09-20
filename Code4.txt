@@ -1,0 +1,32 @@
+#Code 4
+
+#Code to create map with FRF Sensors, Create shapefile of only dive depth points and merge dive points for each mission
+#Natural Neighbor tool used in GUI to test making bathymetric surface, once a useful workflow is established begin using Natural Neighbor in code
+
+import arcpy 
+arcpy.env.overwriteOutput=True
+sr = arcpy.SpatialReference(4326)
+aprx = arcpy.mp.ArcGISProject("CURRENT")
+
+#FRF sensor shapefile
+addSensors = 'C:/ArcGIS_Pro_Python/SwarmDiverProject/FRF_Sensor_Database/FRF_Sensor_Database.shp'
+
+map = aprx.listMaps()[0]  # define map that data is being added to
+map.addDataFromPath(addSensors) #add sensors to map
+
+#10/19 Mission
+arcpy.management.XYTableToPoint('C:/ArcGIS_Pro_Python/SwarmDiverProject/diveLogs/swarm_divers_604_10-19-2021_only_dives.csv', 'C:/ArcGIS_Pro_Python/SwarmDiverProject/diveLogs/swarm_divers_604_10_19_2021.shp', 'lon', 'lat', 'depth_m', sr)
+arcpy.management.XYTableToPoint('C:/ArcGIS_Pro_Python/SwarmDiverProject/diveLogs/swarm_divers_603_10-19-2021_only_dives.csv', 'C:/ArcGIS_Pro_Python/SwarmDiverProject/diveLogs/swarm_divers_603_10_19_2021.shp', 'lon', 'lat', 'depth_m', sr) 
+arcpy.Merge_management(['C:/ArcGIS_Pro_Python/SwarmDiverProject/diveLogs/swarm_divers_604_10_19_2021.shp', 'C:/ArcGIS_Pro_Python/SwarmDiverProject/diveLogs/swarm_divers_603_10_19_2021.shp'], 
+                       'C:/ArcGIS_Pro_Python/SwarmDiverProject/diveLogs/merge_10_19.shp')
+
+#10/25 Mission
+arcpy.management.XYTableToPoint('C:/ArcGIS_Pro_Python/SwarmDiverProject/diveLogs/swarm_divers_602_10-25-2021_only_dives.csv', 'C:/ArcGIS_Pro_Python/SwarmDiverProject/diveLogs/swarm_divers_602_10_25_2021.shp', 'lon', 'lat', 'depth_m', sr)
+arcpy.management.XYTableToPoint('C:/ArcGIS_Pro_Python/SwarmDiverProject/diveLogs/swarm_divers_603_10-25-2021_only_dives.csv', 'C:/ArcGIS_Pro_Python/SwarmDiverProject/diveLogs/swarm_divers_603_10_25_2021.shp', 'lon', 'lat', 'depth_m', sr)
+arcpy.Merge_management(['C:/ArcGIS_Pro_Python/SwarmDiverProject/diveLogs/swarm_divers_602_10_25_2021.shp', 'C:/ArcGIS_Pro_Python/SwarmDiverProject/diveLogs/swarm_divers_603_10_25_2021.shp'], 
+                       'C:/ArcGIS_Pro_Python/SwarmDiverProject/diveLogs/merge_10_25.shp')
+
+#Manually Select Points in map, create subset and run Natural Neighbor
+arcpy.ddd.NaturalNeighbor('C:/ArcGIS_Pro_Python/SwarmDiverProject/merge_subset.shp', 'depth_m', 'C:\ArcGIS_Pro_Python\SwarmDiverProject\MyProject.gdb\Natural_merg2', 6.16400000012618E-06)
+
+print('done')

@@ -1,0 +1,19 @@
+#Function 2
+
+#Function that returns list of Dive Depths from parsed CSV
+
+import pandas as pd
+import numpy as np
+from scipy.signal import argrelextrema
+
+def findDiveDepths(parsedCSV):
+    colnames = ['vehicleID','lat','lon','depth_m','temp_C','groundSpeed_m_p_s','yaw_deg','pitch_deg','roll_deg','date','time']
+    data = pd.read_csv(parsedCSV, names=colnames)
+    depth_m = data.depth_m.tolist()
+    del depth_m[0]
+    x = np.array(depth_m, dtype=np.double)
+    originalList = x[argrelextrema(x, np.greater, order=5)[0]].tolist()
+    filteredList = [i for i in originalList if i > 1]
+    print([str(x) for x in filteredList])
+    
+findDiveDepths('./swarm_divers_604_10-19-2021-parsed.csv')
